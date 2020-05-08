@@ -193,6 +193,16 @@ function () {
     this._root = null;
   }
 
+  Object.defineProperty(BinaryTree.prototype, "balancen", {
+    get: function get() {
+      return this._balancen;
+    },
+    set: function set(b) {
+      this._balancen = b;
+    },
+    enumerable: true,
+    configurable: true
+  });
   Object.defineProperty(BinaryTree.prototype, "sts", {
     get: function get() {
       return this._sts;
@@ -364,6 +374,46 @@ function () {
     } else {
       return 0;
     }
+  }; //balancing Stuff
+  // in the task we balancing tree when we adding a new node if the bool balance is true
+
+
+  BinaryTree.prototype.balanceFactor = function (p) {
+    return this.treeDepth(p.left) - this.treeDepth(p.right);
+  };
+
+  BinaryTree.prototype.rotateRight = function (p) {
+    var q = p.left;
+    p.left = q.right;
+    q.right = p;
+    return q;
+  };
+
+  BinaryTree.prototype.rotateLeft = function (q) {
+    var p = q.right;
+    q.right = p.left;
+    p.left = q;
+    return p;
+  };
+
+  BinaryTree.prototype.balance = function (p) {
+    if (this.balanceFactor(p) == 2) {
+      if (this.balanceFactor(p.right) < 0) {
+        p.right = this.rotateRight(p.right);
+      }
+
+      return this.rotateLeft(p);
+    }
+
+    if (this.balanceFactor(p) == -2) {
+      if (this.balanceFactor(p.left) > 0) {
+        p.left = this.rotateLeft(p.left);
+      }
+
+      return this.rotateRight(p);
+    }
+
+    return p;
   };
 
   BinaryTree.prototype.leafCount = function (node) {
@@ -470,8 +520,8 @@ bt.addToTree(6);
 bt.addToTree(7);
 bt.addToTree(11);
 bt.addToTree(15);
-bt.addToTree(10);
-bt.deleteKey(11);
+bt.addToTree(10); //bt.balance(bt.root);
+
 var depth = bt.treeDepth(bt.root);
 var lc = bt.leafCount();
 bt.StraightTraversal();
@@ -512,7 +562,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "39659" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43049" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

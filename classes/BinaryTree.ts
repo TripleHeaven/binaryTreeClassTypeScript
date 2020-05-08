@@ -3,6 +3,13 @@ export {BinaryTree};
 class BinaryTree<T> {
     // Property to hold a reference to the root node of the tree
     private _root: TreeNode<T>;
+    private _balancen: boolean;
+    public get balancen(): boolean{
+      return this._balancen;
+    }
+    public set balancen(b : boolean){
+      this._balancen = b;
+    }
     // Straight Traversal String
     private _sts = "";
     public get sts(): string {
@@ -141,6 +148,38 @@ class BinaryTree<T> {
         else{
             return 0;
         }
+    }
+    //balancing Stuff
+    // in the task we balancing tree when we adding a new node if the bool balance is true
+    balanceFactor (p : TreeNode<T>){
+      return (this.treeDepth(p.left) - this.treeDepth(p.right));
+    }
+    rotateRight(p : TreeNode<T>){
+      let q = p.left;
+      p.left = q.right;
+      q.right = p;
+      return q;
+    }
+    rotateLeft(q : TreeNode<T>){
+      let p = q.right;
+      q.right = p.left;
+      p.left = q;
+      return p;
+    }
+    balance (p : TreeNode<T>){
+      if (this.balanceFactor(p) == 2){
+        if (this.balanceFactor(p.right) < 0 ){
+          p.right = this.rotateRight(p.right);
+        }
+        return (this.rotateLeft(p));
+      }
+      if (this.balanceFactor(p) == -2){
+        if (this.balanceFactor(p.left) > 0){
+          p.left = this.rotateLeft(p.left);
+        }
+        return (this.rotateRight(p));
+      }
+      return p;      
     }
     leafCount (node = this._root): number {
       if (node == null){
