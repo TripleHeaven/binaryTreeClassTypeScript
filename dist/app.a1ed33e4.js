@@ -501,6 +501,30 @@ function () {
 }();
 
 exports.Output = Output;
+},{}],"classes/taskConcordance.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var taskConcordance =
+/** @class */
+function () {
+  function taskConcordance(idInput, idOutput) {
+    var outsideLabelInput = document.getElementById(idInput); //outsideLabelShow.innerHTML = valueToShow.toString();
+
+    this.givenString = outsideLabelInput.value; // Splitting the words into an array
+
+    this.words = this.givenString.split(" ");
+    var outsideLabeslShow = document.getElementById(idOutput);
+    outsideLabeslShow.innerHTML = this.words.toString();
+  }
+
+  return taskConcordance;
+}();
+
+exports.taskConcordance = taskConcordance;
 },{}],"classes/app.ts":[function(require,module,exports) {
 "use strict";
 
@@ -512,16 +536,24 @@ var BinaryTree_1 = require("./BinaryTree");
 
 var Output_1 = require("./Output");
 
+var taskConcordance_1 = require("./taskConcordance");
+
 var forShow = new Output_1.Output();
 var bt = new BinaryTree_1.BinaryTree();
+
+document.getElementById("doInput").onclick = function concordance() {
+  var ccrdnc = new taskConcordance_1.taskConcordance("inputConc", "outputConc");
+  return null;
+};
+
 bt.addToTree(5);
 bt.addToTree(2);
 bt.addToTree(6);
 bt.addToTree(7);
 bt.addToTree(11);
 bt.addToTree(15);
-bt.addToTree(10); //bt.balance(bt.root);
-
+bt.addToTree(10);
+bt.balance(bt.root);
 var depth = bt.treeDepth(bt.root);
 var lc = bt.leafCount();
 bt.StraightTraversal();
@@ -534,7 +566,7 @@ forShow.toShow("straightTraversal", bt.sts);
 forShow.toShow("simmetricalTraversal", bt.sits);
 forShow.toShow("backorderTraversal", bt.bots);
 forShow.toShow("broadwidthTraversal", bt.bfsStr);
-},{"./BinaryTree":"classes/BinaryTree.ts","./Output":"classes/Output.ts"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./BinaryTree":"classes/BinaryTree.ts","./Output":"classes/Output.ts","./taskConcordance":"classes/taskConcordance.ts"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -562,7 +594,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "43049" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34917" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
