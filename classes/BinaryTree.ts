@@ -1,7 +1,10 @@
 import {TreeNode} from "./BinaryTreeNode";
+import { Drawing } from "./drawing";
 export {BinaryTree};
+
 class BinaryTree<T> {
     // Property to hold a reference to the root node of the tree
+    //forDrawing
     private _root: TreeNode<T>;
     private _balancen: boolean;
     public get balancen(): boolean{
@@ -30,6 +33,7 @@ class BinaryTree<T> {
     public get bfsStr () : string {
       return this._bfsStr;
     }
+    
     // method for adding to a string
     strAppend (str : string, v : string, separator="") : string{
       return str+separator+v;
@@ -235,7 +239,69 @@ class BinaryTree<T> {
           }
         }
       }
-    constructor() {
+      position (depth : number, index : number, dr : Drawing){
+        let x = (index * dr.canvas.width )/ Math.pow(2,depth) + 1 ;
+        let y = (depth * dr.canvas.height)/ (this.treeDepth(this.root));
+        return [x,y]
+      }
+      BFSpos (node = this._root) : boolean {
+        let queue = [];
+        let pos = [];
+        if (node == null){
+          return null;
+        }
+        else{
+          queue.push(node);
+  
+          while (queue.length > 0){
+            let tmp = queue.shift();
+            this._bfsStr = this.strAppend(this.bfsStr, tmp.value.toString()," ");
+            pos.push(this.position(tmp.depthNode,tmp.index,this.dr));
+            if (tmp.left!=null){
+              queue.push(tmp.left);
+            }
+            if (tmp.right!=null){
+              queue.push(tmp.right);
+            }
+          }
+  
+        }
+      }
+      BFSDrawing (node = this._root) : boolean {
+        let queue = [];
+        if (node == null){
+          return null;
+        }
+        else{
+          queue.push(node);
+  
+          while (queue.length > 0){
+            let tmp = queue.shift();
+            if (tmp == this.root){
+              this.root.index = 1;
+            }
+            else {
+              if (tmp.left!=null){
+                tmp.left.index = tmp.index * 2 - 2;
+              }
+              if (tmp.right!= null){
+                tmp.right.index = tmp.index * 2;
+              }
+            }
+            tmp.depthNode = this.treeDepth(this.root) - this.treeDepth(tmp);
+            if (tmp.left!=null){
+              queue.push(tmp.left);
+            }
+            if (tmp.right!=null){
+              queue.push(tmp.right);
+            }
+          }
+  
+        }
+      }
+    dr : Drawing;
+    constructor(dr: Drawing = null) {
       this._root = null;
+      this.dr = dr;
     }
   }

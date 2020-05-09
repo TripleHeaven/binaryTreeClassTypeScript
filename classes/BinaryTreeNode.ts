@@ -10,7 +10,7 @@ class TreeNode<T> {
     public set value(v: T) {
       this._value = v;
     }
-  
+    
     // Property to hold reference to the left child node
     private _left: TreeNode<T>;
     public get left(): TreeNode<T> {
@@ -28,7 +28,12 @@ class TreeNode<T> {
     public set right(v: TreeNode<T>) {
       this._right = v;
     }
-  
+    
+    // forDrawing
+    index : number;
+    depthNode : number;
+
+
     // Initialize a new node
     constructor(value: T) {
       this._value = value;

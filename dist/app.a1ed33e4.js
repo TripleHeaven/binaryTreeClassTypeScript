@@ -181,8 +181,12 @@ var BinaryTreeNode_1 = require("./BinaryTreeNode");
 var BinaryTree =
 /** @class */
 function () {
-  function BinaryTree() {
-    // Straight Traversal String
+  function BinaryTree(dr) {
+    if (dr === void 0) {
+      dr = null;
+    } // Straight Traversal String
+
+
     this._sts = ""; // Simmetrical Traversal String
 
     this._sits = ""; // Back order Traversal String
@@ -191,6 +195,7 @@ function () {
 
     this._bfsStr = "";
     this._root = null;
+    this.dr = dr;
   }
 
   Object.defineProperty(BinaryTree.prototype, "balancen", {
@@ -476,6 +481,81 @@ function () {
     }
   };
 
+  BinaryTree.prototype.position = function (depth, index, dr) {
+    var x = index * dr.canvas.width / Math.pow(2, depth) + 1;
+    var y = depth * dr.canvas.height / this.treeDepth(this.root);
+    return [x, y];
+  };
+
+  BinaryTree.prototype.BFSpos = function (node) {
+    if (node === void 0) {
+      node = this._root;
+    }
+
+    var queue = [];
+    var pos = [];
+
+    if (node == null) {
+      return null;
+    } else {
+      queue.push(node);
+
+      while (queue.length > 0) {
+        var tmp = queue.shift();
+        this._bfsStr = this.strAppend(this.bfsStr, tmp.value.toString(), " ");
+        pos.push(this.position(tmp.depthNode, tmp.index, this.dr));
+
+        if (tmp.left != null) {
+          queue.push(tmp.left);
+        }
+
+        if (tmp.right != null) {
+          queue.push(tmp.right);
+        }
+      }
+    }
+  };
+
+  BinaryTree.prototype.BFSDrawing = function (node) {
+    if (node === void 0) {
+      node = this._root;
+    }
+
+    var queue = [];
+
+    if (node == null) {
+      return null;
+    } else {
+      queue.push(node);
+
+      while (queue.length > 0) {
+        var tmp = queue.shift();
+
+        if (tmp == this.root) {
+          this.root.index = 1;
+        } else {
+          if (tmp.left != null) {
+            tmp.left.index = tmp.index * 2 - 2;
+          }
+
+          if (tmp.right != null) {
+            tmp.right.index = tmp.index * 2;
+          }
+        }
+
+        tmp.depthNode = this.treeDepth(this.root) - this.treeDepth(tmp);
+
+        if (tmp.left != null) {
+          queue.push(tmp.left);
+        }
+
+        if (tmp.right != null) {
+          queue.push(tmp.right);
+        }
+      }
+    }
+  };
+
   return BinaryTree;
 }();
 
@@ -518,13 +598,34 @@ function () {
 
     this.words = this.givenString.split(" ");
     var outsideLabeslShow = document.getElementById(idOutput);
-    outsideLabeslShow.innerHTML = this.words.toString();
+    outsideLabeslShow.innerHTML = this.words.toString().toLocaleLowerCase();
   }
 
   return taskConcordance;
 }();
 
 exports.taskConcordance = taskConcordance;
+},{}],"classes/drawing.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Drawing =
+/** @class */
+function () {
+  function Drawing(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
+    this.ctx.fillStyle = "black";
+    this.ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  return Drawing;
+}();
+
+exports.Drawing = Drawing;
 },{}],"classes/app.ts":[function(require,module,exports) {
 "use strict";
 
@@ -538,21 +639,34 @@ var Output_1 = require("./Output");
 
 var taskConcordance_1 = require("./taskConcordance");
 
+var drawing_1 = require("./drawing");
+
 var forShow = new Output_1.Output();
-var bt = new BinaryTree_1.BinaryTree();
+var forDrawing = new drawing_1.Drawing(document.getElementById("forDrawing"));
+var bt = new BinaryTree_1.BinaryTree(forDrawing);
 
 document.getElementById("doInput").onclick = function concordance() {
   var ccrdnc = new taskConcordance_1.taskConcordance("inputConc", "outputConc");
   return null;
 };
 
+document.getElementById("draw").onclick = function draw() {
+  bt.BFSDrawing();
+  var positions = bt.BFSpos();
+  var a = 5;
+  return null;
+};
+
 bt.addToTree(5);
+/*
 bt.addToTree(2);
 bt.addToTree(6);
 bt.addToTree(7);
 bt.addToTree(11);
 bt.addToTree(15);
 bt.addToTree(10);
+*/
+
 bt.balance(bt.root);
 var depth = bt.treeDepth(bt.root);
 var lc = bt.leafCount();
@@ -566,7 +680,7 @@ forShow.toShow("straightTraversal", bt.sts);
 forShow.toShow("simmetricalTraversal", bt.sits);
 forShow.toShow("backorderTraversal", bt.bots);
 forShow.toShow("broadwidthTraversal", bt.bfsStr);
-},{"./BinaryTree":"classes/BinaryTree.ts","./Output":"classes/Output.ts","./taskConcordance":"classes/taskConcordance.ts"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./BinaryTree":"classes/BinaryTree.ts","./Output":"classes/Output.ts","./taskConcordance":"classes/taskConcordance.ts","./drawing":"classes/drawing.ts"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -594,7 +708,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34917" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35619" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

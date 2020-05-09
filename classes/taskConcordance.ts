@@ -9,6 +9,6 @@ class taskConcordance{
         // Splitting the words into an array
         this.words = this.givenString.split(" ");
         let outsideLabeslShow = document.getElementById(idOutput); 
-        outsideLabeslShow.innerHTML = this.words.toString();
+        outsideLabeslShow.innerHTML = this.words.toString().toLocaleLowerCase();
     }
 }

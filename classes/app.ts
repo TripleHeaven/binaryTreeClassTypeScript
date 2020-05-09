@@ -2,23 +2,35 @@ import {BinaryTree} from "./BinaryTree";
 import {TreeNode} from "./BinaryTreeNode";
 import {Output} from "./Output";
 import {taskConcordance} from "./taskConcordance";
+import {Drawing} from "./drawing";
 
 let forShow = new Output();
-let bt = new BinaryTree();
+let forDrawing = new Drawing(document.getElementById("forDrawing"));
+let bt = new BinaryTree(forDrawing);
 
 document.getElementById("doInput").onclick = function concordance(){
     let ccrdnc = new taskConcordance("inputConc","outputConc");
     return null;
 }
 
+document.getElementById("draw").onclick = function draw(){
+    bt.BFSDrawing();
+    let positions = bt.BFSpos();
+    let a = 5;
+
+    return null;
+}
+
 
 bt.addToTree(5);
+/*
 bt.addToTree(2);
 bt.addToTree(6);
 bt.addToTree(7);
 bt.addToTree(11);
 bt.addToTree(15);
 bt.addToTree(10);
+*/
 bt.balance(bt.root);
 
 
