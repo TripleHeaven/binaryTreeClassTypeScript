@@ -9,5 +9,13 @@ class Drawing{
         this.ctx.fillStyle = "black";
         this.ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
-
+    
+    drawingNodes(positions : Array<any>){
+        for (let i = 0 ; i < positions.length ; i++){
+            this.ctx.fillStyle = "white";
+            let width = 5;
+            this.ctx.fillRect(positions[i][0], positions[i][1], width,width);
+        }
+    
+    }
 }

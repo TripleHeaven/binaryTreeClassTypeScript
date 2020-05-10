@@ -240,11 +240,11 @@ class BinaryTree<T> {
         }
       }
       position (depth : number, index : number, dr : Drawing){
-        let x = (index * dr.canvas.width )/ Math.pow(2,depth) + 1 ;
-        let y = (depth * dr.canvas.height)/ (this.treeDepth(this.root));
+        let x = index *dr.canvas.width / (Math.pow(2,depth) + 1) ;
+        let y = depth * dr.canvas.height/ (this.treeDepth(this.root));
         return [x,y]
       }
-      BFSpos (node = this._root) : boolean {
+      BFSpos (node = this._root) : Array<any> {
         let queue = [];
         let pos = [];
         if (node == null){
@@ -266,9 +266,11 @@ class BinaryTree<T> {
           }
   
         }
+        return pos;
       }
       BFSDrawing (node = this._root) : boolean {
         let queue = [];
+        this.root.index = 1;
         if (node == null){
           return null;
         }
@@ -276,18 +278,14 @@ class BinaryTree<T> {
           queue.push(node);
   
           while (queue.length > 0){
-            let tmp = queue.shift();
-            if (tmp == this.root){
-              this.root.index = 1;
-            }
-            else {
+            let tmp = queue.shift();  
               if (tmp.left!=null){
                 tmp.left.index = tmp.index * 2 - 2;
               }
               if (tmp.right!= null){
                 tmp.right.index = tmp.index * 2;
               }
-            }
+            
             tmp.depthNode = this.treeDepth(this.root) - this.treeDepth(tmp);
             if (tmp.left!=null){
               queue.push(tmp.left);

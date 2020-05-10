@@ -482,7 +482,7 @@ function () {
   };
 
   BinaryTree.prototype.position = function (depth, index, dr) {
-    var x = index * dr.canvas.width / Math.pow(2, depth) + 1;
+    var x = index * dr.canvas.width / (Math.pow(2, depth) + 1);
     var y = depth * dr.canvas.height / this.treeDepth(this.root);
     return [x, y];
   };
@@ -514,6 +514,8 @@ function () {
         }
       }
     }
+
+    return pos;
   };
 
   BinaryTree.prototype.BFSDrawing = function (node) {
@@ -522,6 +524,7 @@ function () {
     }
 
     var queue = [];
+    this.root.index = 1;
 
     if (node == null) {
       return null;
@@ -531,16 +534,12 @@ function () {
       while (queue.length > 0) {
         var tmp = queue.shift();
 
-        if (tmp == this.root) {
-          this.root.index = 1;
-        } else {
-          if (tmp.left != null) {
-            tmp.left.index = tmp.index * 2 - 2;
-          }
+        if (tmp.left != null) {
+          tmp.left.index = tmp.index * 2 - 2;
+        }
 
-          if (tmp.right != null) {
-            tmp.right.index = tmp.index * 2;
-          }
+        if (tmp.right != null) {
+          tmp.right.index = tmp.index * 2;
         }
 
         tmp.depthNode = this.treeDepth(this.root) - this.treeDepth(tmp);
@@ -622,6 +621,14 @@ function () {
     this.ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
+  Drawing.prototype.drawingNodes = function (positions) {
+    for (var i = 0; i < positions.length; i++) {
+      this.ctx.fillStyle = "white";
+      var width = 5;
+      this.ctx.fillRect(positions[i][0], positions[i][1], width, width);
+    }
+  };
+
   return Drawing;
 }();
 
@@ -654,19 +661,19 @@ document.getElementById("draw").onclick = function draw() {
   bt.BFSDrawing();
   var positions = bt.BFSpos();
   var a = 5;
+  forDrawing.drawingNodes(positions);
   return null;
 };
 
 bt.addToTree(5);
-/*
+bt.addToTree(3);
+bt.addToTree(6);
 bt.addToTree(2);
 bt.addToTree(6);
 bt.addToTree(7);
 bt.addToTree(11);
 bt.addToTree(15);
 bt.addToTree(10);
-*/
-
 bt.balance(bt.root);
 var depth = bt.treeDepth(bt.root);
 var lc = bt.leafCount();
@@ -708,7 +715,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "35619" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34063" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

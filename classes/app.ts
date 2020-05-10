@@ -17,20 +17,23 @@ document.getElementById("draw").onclick = function draw(){
     bt.BFSDrawing();
     let positions = bt.BFSpos();
     let a = 5;
-
+    
+    forDrawing.drawingNodes(positions);
     return null;
 }
 
 
 bt.addToTree(5);
-/*
+bt.addToTree (3);
+bt.addToTree (6);
+
 bt.addToTree(2);
 bt.addToTree(6);
 bt.addToTree(7);
 bt.addToTree(11);
 bt.addToTree(15);
 bt.addToTree(10);
-*/
+
 bt.balance(bt.root);
 
 
