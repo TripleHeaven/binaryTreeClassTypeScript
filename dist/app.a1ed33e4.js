@@ -481,10 +481,10 @@ function () {
     }
   };
 
-  BinaryTree.prototype.position = function (depth, index, dr) {
+  BinaryTree.prototype.position = function (depth, index, dr, Node) {
     var x = index * dr.canvas.width / (Math.pow(2, depth) + 1);
     var y = depth * dr.canvas.height / this.treeDepth(this.root);
-    return [x, y];
+    return [x, y, Node.value.toString()];
   };
 
   BinaryTree.prototype.BFSpos = function (node) {
@@ -502,8 +502,7 @@ function () {
 
       while (queue.length > 0) {
         var tmp = queue.shift();
-        this._bfsStr = this.strAppend(this.bfsStr, tmp.value.toString(), " ");
-        pos.push(this.position(tmp.depthNode, tmp.index, this.dr));
+        pos.push(this.position(tmp.depthNode, tmp.index, this.dr, tmp));
 
         if (tmp.left != null) {
           queue.push(tmp.left);
@@ -626,6 +625,8 @@ function () {
       this.ctx.fillStyle = "white";
       var width = 5;
       this.ctx.fillRect(positions[i][0], positions[i][1], width, width);
+      this.ctx.font = "30px Arial";
+      this.ctx.fillText(positions[i][2], positions[i][0], positions[i][1] + 30);
     }
   };
 
@@ -665,15 +666,20 @@ document.getElementById("draw").onclick = function draw() {
   return null;
 };
 
+document.getElementById("balance").onclick = function draw() {
+  bt.balance(bt.root);
+  return null;
+};
+
 bt.addToTree(5);
-bt.addToTree(3);
-bt.addToTree(6);
-bt.addToTree(2);
 bt.addToTree(6);
 bt.addToTree(7);
-bt.addToTree(11);
-bt.addToTree(15);
-bt.addToTree(10);
+bt.addToTree(3);
+bt.addToTree(4);
+bt.addToTree(1);
+bt.addToTree(8);
+bt.addToTree(9);
+bt.deleteKey(4);
 bt.balance(bt.root);
 var depth = bt.treeDepth(bt.root);
 var lc = bt.leafCount();
@@ -715,7 +721,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "34063" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45369" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

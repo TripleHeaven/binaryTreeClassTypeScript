@@ -15,6 +15,8 @@ class Drawing{
             this.ctx.fillStyle = "white";
             let width = 5;
             this.ctx.fillRect(positions[i][0], positions[i][1], width,width);
+            this.ctx.font = "30px Arial";
+            this.ctx.fillText(positions[i][2], positions[i][0], positions[i][1]+30);
         }
     
     }

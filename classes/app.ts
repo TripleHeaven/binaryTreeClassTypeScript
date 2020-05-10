@@ -21,22 +21,22 @@ document.getElementById("draw").onclick = function draw(){
     forDrawing.drawingNodes(positions);
     return null;
 }
-
+document.getElementById("balance").onclick = function draw(){
+    bt.balance(bt.root);
+    return null;
+}
 
 bt.addToTree(5);
-bt.addToTree (3);
-bt.addToTree (6);
-
-bt.addToTree(2);
 bt.addToTree(6);
 bt.addToTree(7);
-bt.addToTree(11);
-bt.addToTree(15);
-bt.addToTree(10);
+bt.addToTree(3);
+bt.addToTree(4);
+bt.addToTree(1);
+bt.addToTree(8);
+bt.addToTree(9);
 
+bt.deleteKey(4);
 bt.balance(bt.root);
-
-
 let depth = bt.treeDepth(bt.root);
 let lc = bt.leafCount();
 
