@@ -2,6 +2,8 @@ import {BinaryTree} from "./BinaryTree"
 export {TreeNode};
 class TreeNode<T> {
     // Getting values of the node
+    x : number;
+    y : number;
     private _value: T;
     public get value(): T {
       return this._value;
@@ -32,6 +34,7 @@ class TreeNode<T> {
     // forDrawing
     index : number;
     depthNode : number;
+    
 
 
     // Initialize a new node
@@ -39,5 +42,7 @@ class TreeNode<T> {
       this._value = value;
       this._left = null;
       this._right = null;
+      this.x = 0;
+      this.y = 0;
     }
   }

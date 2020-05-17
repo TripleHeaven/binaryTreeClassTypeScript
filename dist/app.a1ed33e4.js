@@ -132,6 +132,8 @@ function () {
     this._value = value;
     this._left = null;
     this._right = null;
+    this.x = 0;
+    this.y = 0;
   }
 
   Object.defineProperty(TreeNode.prototype, "value", {
@@ -421,6 +423,33 @@ function () {
     return p;
   };
 
+  BinaryTree.prototype.BFSb = function (node) {
+    if (node === void 0) {
+      node = this._root;
+    }
+
+    var queue = [];
+
+    if (node == null) {
+      return null;
+    } else {
+      queue.push(node);
+
+      while (queue.length > 0) {
+        var tmp = queue.shift();
+        this.balance(tmp);
+
+        if (tmp.left != null) {
+          queue.push(tmp.left);
+        }
+
+        if (tmp.right != null) {
+          queue.push(tmp.right);
+        }
+      }
+    }
+  };
+
   BinaryTree.prototype.leafCount = function (node) {
     if (node === void 0) {
       node = this._root;
@@ -484,6 +513,8 @@ function () {
   BinaryTree.prototype.position = function (depth, index, dr, Node) {
     var x = index * dr.canvas.width / (Math.pow(2, depth) + 1);
     var y = depth * dr.canvas.height / this.treeDepth(this.root);
+    Node.x = x;
+    Node.y = y;
     return [x, y, Node.value.toString()];
   };
 
@@ -517,6 +548,59 @@ function () {
     return pos;
   };
 
+  BinaryTree.prototype.BFSposNets = function (node, canvas) {
+    if (node === void 0) {
+      node = this._root;
+    }
+
+    var queue = [];
+    var pos = [];
+    var canvash = canvas;
+    var ctxh = canvash.getContext("2d");
+
+    if (node == null) {
+      return null;
+    } else {
+      queue.push(node);
+
+      while (queue.length > 0) {
+        var tmp = queue.shift();
+
+        if (tmp.left != null) {
+          queue.push(tmp.left);
+          var startPoint = this.position(tmp.depthNode, tmp.index, this.dr, tmp);
+          var endPoint = this.position(tmp.left.depthNode, tmp.left.index, this.dr, tmp.left);
+          var xStart = startPoint[0];
+          var yStart = startPoint[1];
+          var xEnd = endPoint[0];
+          var yEnd = endPoint[1];
+          ctxh.beginPath();
+          ctxh.moveTo(Number(xStart), Number(yStart));
+          ctxh.lineTo(Number(xEnd), Number(yEnd));
+          ctxh.strokeStyle = 'white';
+          ctxh.stroke();
+        }
+
+        if (tmp.right != null) {
+          queue.push(tmp.right);
+          var startPoint = this.position(tmp.depthNode, tmp.index, this.dr, tmp);
+          var endPoint = this.position(tmp.right.depthNode, tmp.right.index, this.dr, tmp.right);
+          var xStart = startPoint[0];
+          var yStart = startPoint[1];
+          var xEnd = endPoint[0];
+          var yEnd = endPoint[1];
+          ctxh.beginPath();
+          ctxh.moveTo(Number(xStart), Number(yStart));
+          ctxh.lineTo(Number(xEnd), Number(yEnd));
+          ctxh.strokeStyle = 'white';
+          ctxh.stroke();
+        }
+      }
+    }
+
+    return null;
+  };
+
   BinaryTree.prototype.BFSDrawing = function (node) {
     if (node === void 0) {
       node = this._root;
@@ -534,7 +618,7 @@ function () {
         var tmp = queue.shift();
 
         if (tmp.left != null) {
-          tmp.left.index = tmp.index * 2 - 2;
+          tmp.left.index = tmp.index * 2 - 1;
         }
 
         if (tmp.right != null) {
@@ -552,6 +636,16 @@ function () {
         }
       }
     }
+  };
+
+  BinaryTree.prototype.storeBSTNodes = function (root, arr) {
+    if (root == null) {
+      return null;
+    }
+
+    this.storeBSTNodes(root.left, arr);
+    arr.push(root);
+    this.storeBSTNodes(root.right, arr);
   };
 
   return BinaryTree;
@@ -594,9 +688,24 @@ function () {
 
     this.givenString = outsideLabelInput.value; // Splitting the words into an array
 
-    this.words = this.givenString.split(" ");
+    var forSplit = ["!", ";", ",", " "];
+    this.words = this.givenString.split(/\W/); // converting to lower case
+
+    for (var i = 0; i < this.words.length; i++) {
+      this.words[i] = this.words[i].toLocaleLowerCase();
+    } // removing nulls
+
+
+    var properWords = [];
+
+    for (var i = 0; i < this.words.length; i++) {
+      if (this.words[i] != "") {
+        properWords.push(this.words[i]);
+      }
+    }
+
     var outsideLabeslShow = document.getElementById(idOutput);
-    outsideLabeslShow.innerHTML = this.words.toString().toLocaleLowerCase();
+    outsideLabeslShow.innerHTML = properWords.toString();
   }
 
   return taskConcordance;
@@ -630,6 +739,8 @@ function () {
     }
   };
 
+  Drawing.prototype.drawingLinesBetweenNodes = function (positions) {};
+
   return Drawing;
 }();
 
@@ -661,26 +772,31 @@ document.getElementById("doInput").onclick = function concordance() {
 document.getElementById("draw").onclick = function draw() {
   bt.BFSDrawing();
   var positions = bt.BFSpos();
-  var a = 5;
   forDrawing.drawingNodes(positions);
+  bt.BFSposNets(bt.root, document.getElementById("forDrawing"));
   return null;
 };
 
 document.getElementById("balance").onclick = function draw() {
   bt.balance(bt.root);
+  bt.BFSDrawing();
+  var positions = bt.BFSpos();
+  var a = 5;
+  forDrawing.drawingNodes(positions);
   return null;
 };
 
 bt.addToTree(5);
 bt.addToTree(6);
-bt.addToTree(7);
-bt.addToTree(3);
-bt.addToTree(4);
+bt.addToTree(2);
 bt.addToTree(1);
+bt.addToTree(7);
+bt.addToTree(3); //bt.deleteKey(4);
+
+bt.addToTree(5.5);
 bt.addToTree(8);
 bt.addToTree(9);
-bt.deleteKey(4);
-bt.balance(bt.root);
+bt.addToTree(10);
 var depth = bt.treeDepth(bt.root);
 var lc = bt.leafCount();
 bt.StraightTraversal();
@@ -721,7 +837,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "45369" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "37663" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -17,7 +17,12 @@ class Drawing{
             this.ctx.fillRect(positions[i][0], positions[i][1], width,width);
             this.ctx.font = "30px Arial";
             this.ctx.fillText(positions[i][2], positions[i][0], positions[i][1]+30);
+            
+            
         }
     
+    }
+    drawingLinesBetweenNodes(positions : Array<any>){
+
     }
 }
